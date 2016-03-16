@@ -1,0 +1,19 @@
+{
+  "name": "moneyBot",
+  "version": "0.0.0",
+  "description": "MoneyBot to post investment updates to slack",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Peerby/moneyBot.git"
+  },
+  "scripts": {
+    "start": "node ./app.js"
+  },
+  "author": "Peerby <dev.peerby.com>",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.6.1",
+    "needle": "^1.0.0"
+  }
+}
