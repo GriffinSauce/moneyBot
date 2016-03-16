@@ -42,7 +42,7 @@ function output(theMoney, theGoal) {
             "text": "Crowdfunding update from Moneybot!",
             "attachments": [
                 {
-                    "text": ":moneybag: *"+pricify(newlyAdded)+" was added!*\nWe are now at "+pricify(theMoney)+" total, that's "+percent+"% of our public goal",
+                    "text": ":moneybag: *"+pricify(newlyAdded)+" was added!*\nWe are now at "+pricify(theMoney)+" total, that's "+percent+"% of our public goal\n<https://www.oneplanetcrowd.com/nl/project/138624/description|View campaign on OPC>",
                     "color": "#2CB98C",
                     "mrkdwn_in": ["text", "pretext"]
                 }
