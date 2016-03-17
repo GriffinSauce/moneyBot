@@ -30,6 +30,7 @@ function output(theMoney, theGoal) {
     if(lastAmount){
         newlyAdded = theMoney-lastAmount;
     }
+    lastAmount = theMoney;
 
     console.log('Refreshed:');
     console.log(pricify(theMoney) + ' total, ' + percent + '% complete of public goal!');
