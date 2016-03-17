@@ -1,7 +1,7 @@
 var needle = require('needle');
 var _ = require('lodash');
 
-var refreshRate = 5 * 60 * 1000; // 5 minutes
+var refreshRate = 30 * 1000; // 30 seconds
 var lastAmount;
 getData();
 
