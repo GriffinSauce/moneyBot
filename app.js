@@ -39,9 +39,11 @@ function output(theMoney, theGoal) {
 
     if(newlyAdded > 0) {
         console.log('Posting to Slack');
+
+        var sound = newlyAdded >= 1000 ? '_(play jackpot)_' : '_(play coin)_';
         // Post to slack
         needle.post('https://hooks.slack.com/services/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', {
-            "text": "Crowdfunding update from Moneybot! _(play coin)_",
+            "text": "Crowdfunding update from Moneybot! "+sound,
             "attachments": [
                 {
                     "text": ":moneybag: *"+pricify(newlyAdded)+" was added!*\nWe are now at "+pricify(theMoney)+" total, that's "+percent+"% of our public goal\n<https://www.oneplanetcrowd.com/nl/project/138624/description|View campaign on OPC>",
