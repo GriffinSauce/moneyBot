@@ -9,7 +9,8 @@ getData();
 function getData() {
     needle.get('https://api-cache.oneplanetcrowd.com/?json=project_parents/get&cache=60&id=138624&platform=opc&platforms=opc', function(error, response){
         if(error){
-            return console.error(error);
+            console.error(error);
+            return setTimeout(getData, (1000*60*5)); // Try again after 5 minutes
         }
 
         if(response.body && response.body.status === 'ok') {
