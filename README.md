@@ -10,7 +10,7 @@ Inspiration:
 - Name: The Moneybot
 - Description: Investment updates from crowdfunding
 - Channel: #general, if you dare
-- Image: 
+- Image: ![](/Moneybot_large.jpg?raw=true "The Moneybot #swag")
 
 2. Add your stuff to `config.js`
 
