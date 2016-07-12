@@ -1,6 +1,6 @@
 {
   "name": "moneyBot",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "MoneyBot to post investment updates to slack",
   "main": "main.js",
   "repository": {

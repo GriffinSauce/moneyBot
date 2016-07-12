@@ -1,23 +1,32 @@
 var needle = require('needle');
 var _ = require('lodash');
+var config = require('./config');
 
+if(!config.projectId || !config.slackHookUrl) {
+    console.error('******************************************\n\n');
+    console.error('Error: Please make sure config is complete and contains the projectId and slackHookUrl properties\n\n');
+    console.error('******************************************');
+    return;
+}
+
+var projectUrl = 'https://www.oneplanetcrowd.com/nl/project/'+config.projectId+'/description';
 var refreshRate = 30 * 1000; // 30 seconds
 var lastAmount;
+
+postHello();
 getData();
 
 // Get data from API
 function getData() {
-    needle.get('https://api-cache.oneplanetcrowd.com/?json=project_parents/get&cache=60&id=138624&platform=opc&platforms=opc', function(error, response){
+    needle.get('https://api-cache.oneplanetcrowd.com/?json=project_parents/get&cache=60&id='+config.projectId, function(error, response){
         if(error){
-            console.error(error);
+            console.error('Error getting data, trying again in 5 minutes', error);
             return setTimeout(getData, (1000*60*5)); // Try again after 5 minutes
         }
 
         if(response.body && response.body.status === 'ok') {
-            var theMoney = _.get(response, 'body.posts[0].goal_amount_total');
-            var theGoal = _.get(response, 'body.posts[0].goal_amount');
-            theMoney = parseInt(theMoney);
-            theGoal = parseInt(theGoal);
+            var theMoney = parseInt(_.get(response, 'body.posts[0].goal_amount_total'));
+            var theGoal = parseInt(_.get(response, 'body.posts[0].goal_amount'));
             output(theMoney, theGoal);
         }
     });
@@ -41,13 +50,13 @@ function output(theMoney, theGoal) {
     if(newlyAdded > 0) {
         console.log('Posting to Slack');
 
-        var sound = newlyAdded >= 1000 ? '_(play jackpot)_' : '_(play coin)_';
         // Post to slack
-        needle.post('https://hooks.slack.com/services/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', {
-            "text": "Crowdfunding update from Moneybot! "+sound,
+        var text = ":moneybag: *"+pricify(newlyAdded)+" was added!*\nWe are now at "+pricify(theMoney)+" total, that's "+percent+"% of our public goal\n<"+projectUrl+"|View campaign on OPC>";
+        needle.post(config.slackHookUrl, {
+            "text": "Crowdfunding update from Moneybot! ",
             "attachments": [
                 {
-                    "text": ":moneybag: *"+pricify(newlyAdded)+" was added!*\nWe are now at "+pricify(theMoney)+" total, that's "+percent+"% of our public goal\n<https://www.oneplanetcrowd.com/nl/project/138624/description|View campaign on OPC>",
+                    "text": text,
                     "color": "#2CB98C",
                     "mrkdwn_in": ["text", "pretext"]
                 }
@@ -56,7 +65,7 @@ function output(theMoney, theGoal) {
             json: true
         },function(error, response) {
             if (error) {
-                console.log(error);
+                console.log('Error posting update:', error);
             }
         });
     }
@@ -64,9 +73,10 @@ function output(theMoney, theGoal) {
     setTimeout(getData, refreshRate);
 }
 
-function pricify(euros) { //provide any number of arguments. each argument should be price in cents
-    euros = ''+numberWithPeriods(euros);
+function pricify(euros) {
+
     // put period every 3 chars
+    euros = ''+numberWithPeriods(euros);
     return '€'+euros+',00';
 }
 
@@ -74,4 +84,16 @@ function numberWithPeriods(x) {
     var parts = x.toString().split(",");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     return parts.join(".");
+}
+
+function postHello() {
+    needle.post(config.slackHookUrl, {
+        "text": "Why hello there, I'm your friendly neighborhood Moneybot!\nI'll give you an update when a crowdfunder pledges to your campaign, good luck funding! :grin:\n<"+projectUrl+"|View campaign on OPC>",
+    }, {
+        json: true
+    },function(error, response) {
+        if (error) {
+            console.log('Error posting hello:', error);
+        }
+    });
 }
