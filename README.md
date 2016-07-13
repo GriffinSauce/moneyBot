@@ -21,7 +21,7 @@ Get your project id from the opc url: `https://www.oneplanetcrowd.com/nl/project
 
 ##### 3. Use `npm run start` to start.  
 
-##### 4. Celebrate!
+##### 4. Celebrate when people support you!
 
 ### Sidenotes
 
