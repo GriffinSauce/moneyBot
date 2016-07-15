@@ -27,4 +27,5 @@ Get your project id from the opc url: `https://www.oneplanetcrowd.com/nl/project
 
 - The Moneybot posts a welcome message on start, comment out `postHello();` at `app.js:16` if you don't like that.
 - When the bot starts it needs one call to get status quo, it will post after one minute
+- It will only post when the total has actually changed (to prevent spamming the channel)
 - This was built quickly, dirtily and might crash :)
